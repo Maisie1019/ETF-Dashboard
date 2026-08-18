@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { Card, Typography, Space, Select, Button, DatePicker, Row, Col, Statistic } from 'antd'
 import {
   LineChartOutlined,
-  AreaChartOutlined,
   DownloadOutlined,
   ExpandOutlined,
 } from '@ant-design/icons'
@@ -35,7 +34,7 @@ echarts.use([
   CanvasRenderer,
 ])
 
-const { Title, Text } = Typography
+const { Title } = Typography
 const { RangePicker } = DatePicker
 
 // ============================================

@@ -1,12 +1,10 @@
 import React, { useState } from 'react'
-import { Card, Typography, Space, Row, Col, Statistic, Table, Tag, Progress, Timeline, Alert } from 'antd'
+import { Card, Typography, Space, Row, Col, Statistic, Tag, Progress, Timeline, Alert } from 'antd'
 import {
   ThunderboltOutlined,
   SwapOutlined,
   DollarOutlined,
   ClockCircleOutlined,
-  WarningOutlined,
-  CheckCircleOutlined,
 } from '@ant-design/icons'
 import ReactEChartsCore from 'echarts-for-react/lib/core'
 import * as echarts from 'echarts/core'
@@ -259,7 +257,7 @@ const LiquidityMonitor: React.FC = () => {
   const AlertsTimeline = () => (
     <Timeline
       items={liquidityAlerts.map((alert) => ({
-        color: alert.type === 'critical' ? 'red' : alert.type === 'warning' ? 'orange' : alert.type === 'success' ? 'green' : 'blue',
+        color: alert.type === 'warning' ? 'orange' : alert.type === 'success' ? 'green' : 'blue',
         children: (
           <Space direction="vertical" size={4}>
             <Text strong>{alert.time}</Text>

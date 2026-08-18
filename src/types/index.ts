@@ -63,11 +63,18 @@ export type InvestmentStrategy =
 export type InvestmentStyle =
   | 'large_cap_growth'    // 大盘成长
   | 'large_cap_value'     // 大盘价值
+  | 'large_cap_quality'   // 大盘品质
   | 'mid_cap_growth'      // 中盘成长
   | 'mid_cap_value'       // 中盘价值
   | 'small_cap'           // 小盘
   | 'deep_value'          // 深度价值
   | 'cyclical_growth'     // 周期成长
+  | 'quality'             // 品质投资
+  | 'balanced'            // 均衡配置
+  | 'value'               // 价值风格
+  | 'dividend'            // 红利策略
+  | 'momentum'            // 动量策略
+  | 'multi_factor'        // 多因子
 
 /** ETF类别 */
 export type ETFCategory =

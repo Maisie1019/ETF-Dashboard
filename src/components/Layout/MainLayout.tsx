@@ -1,5 +1,5 @@
 import React from 'react'
-import { Layout as AntLayout, theme, Switch, Space, Typography, Badge } from 'antd'
+import { Layout as AntLayout, theme, Switch, Space, Typography, Badge, Menu } from 'antd'
 import {
   DashboardOutlined,
   BarChartOutlined,
@@ -56,7 +56,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ isDark, onThemeToggle }) => {
           </Text>
         </div>
 
-        <AntLayout.Menu
+        <Menu
           mode="inline"
           defaultSelectedKeys={['overview']}
           items={menuItems}

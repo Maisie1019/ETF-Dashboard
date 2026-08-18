@@ -1,9 +1,7 @@
 import React, { useState } from 'react'
-import { Card, Typography, Table, Space, Select, Tag, Progress, Row, Col } from 'antd'
+import { Card, Typography, Table, Space, Select, Tag, Row, Col, Button } from 'antd'
 import {
   PieChartOutlined,
-  BarChartOutlined,
-  TableOutlined,
   DownloadOutlined,
 } from '@ant-design/icons'
 import ReactEChartsCore from 'echarts-for-react/lib/core'
@@ -298,6 +296,10 @@ const HoldingsAnalysis: React.FC = () => {
       {/* 前十大持仓 */}
       {activeTab === 'holdings' && (
         <>
+          {(() => {
+            const totalWeight = mockHoldings.reduce((sum, h) => sum + h.weight, 0)
+            return (
+              <>
           <Table
             columns={holdingColumns}
             dataSource={mockHoldings}
@@ -306,7 +308,6 @@ const HoldingsAnalysis: React.FC = () => {
             pagination={false}
             scroll={{ y: 350 }}
             summary={() => {
-              const totalWeight = mockHoldings.reduce((sum, h) => sum + h.weight, 0)
               return (
                 <Table.Summary.Row>
                   <Table.Summary.Cell index={0} colSpan={5}>
@@ -333,6 +334,9 @@ const HoldingsAnalysis: React.FC = () => {
               {totalWeight > 60 ? '，超过60%警戒线，建议关注集中度风险' : '，处于合理区间'}。
             </Text>
           </div>
+              </>
+            )
+          })()}
         </>
       )}
 

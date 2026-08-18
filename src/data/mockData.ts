@@ -295,7 +295,7 @@ export const etfProducts: ETFInfo[] = [
   {
     code: '159946',
     name: '国泰鑫汇均衡收益主动管理ETF',
-    fund公司: '国泰基金管理有限公司',
+    fundCompany: '国泰基金管理有限公司',
     fundCompanyShort: '国泰基金',
     exchange: 'SZSE',
     status: 'pending',
@@ -313,7 +313,7 @@ export const etfProducts: ETFInfo[] = [
   {
     code: '159947',
     name: '天弘均衡优选主动管理ETF',
-    fund公司: '天弘基金管理有限公司',
+    fundCompany: '天弘基金管理有限公司',
     fundCompanyShort: '天弘基金',
     exchange: 'SZSE',
     status: 'pending',
@@ -331,7 +331,7 @@ export const etfProducts: ETFInfo[] = [
   {
     code: '159948',
     name: '建信竞争优势主动管理ETF',
-    fund公司: '建信基金管理有限责任公司',
+    fundCompany: '建信基金管理有限责任公司',
     fundCompanyShort: '建信基金',
     exchange: 'SZSE',
     status: 'pending',
@@ -367,7 +367,6 @@ export function generateMockNAVData(
   }
 ): NAVData[] {
   const {
-    annualReturn = 12,
     volatility = 25,
     alpha = 3,
     trackingError = 5,
@@ -378,7 +377,7 @@ export function generateMockNAVData(
   let nav = 1.0
 
   const dailyVol = volatility / Math.sqrt(252)
-  dailyAlpha = alpha / 252
+  const dailyAlpha = alpha / 252
 
   for (let i = 0; i < days; i++) {
     // 跳过周末
@@ -449,7 +448,7 @@ export function generateMockHoldings(strategy: ETFInfo['strategy']): Holding[] {
       { rank: 6, code: '002594', name: '比亚迪', shares: 280, marketValue: 68600, weight: 4.31, sector: '汽车', change: 0.28 },
       { rank: 7, code: '600900', name: '长江电力', shares: 350, marketValue: 54100, weight: 3.40, sector: '公用事业', change: 0.02 },
       { rank: 8, code: '002475', name: '立讯精密', shares: 480, marketValue: 54500, weight: 3.42, sector: '电子', change: 0.32 },
-      { rank: 9, code: '000333', name: '美的集团', shares: 270, marketValue: 48600, width: 3.05, sector: '家用电器', change: 0.15 },
+      { rank: 9, code: '000333', name: '美的集团', shares: 270, marketValue: 48600, weight: 3.05, sector: '家用电器', change: 0.15 },
       { rank: 10, code: '601888', name: '中国中免', shares: 160, marketValue: 61200, weight: 3.84, sector: '商贸零售', change: 0.18 },
     ],
     dividend: [
@@ -509,7 +508,7 @@ export function generateMockHoldings(strategy: ETFInfo['strategy']): Holding[] {
       { rank: 6, code: '002594', name: '比亚迪', shares: 295, marketValue: 72300, weight: 4.54, sector: '汽车', change: 0.32 },
       { rank: 7, code: '600900', name: '长江电力', shares: 365, marketValue: 56400, weight: 3.54, sector: '公用事业', change: 0.02 },
       { rank: 8, code: '002475', name: '立讯精密', shares: 500, marketValue: 56800, weight: 3.57, sector: '电子', change: 0.35 },
-      { rank: 9, code: '000333', name: '美的集团', shares: 280, marketValue: 50400, width: 3.16, sector: '家用电器', change: 0.14 },
+      { rank: 9, code: '000333', name: '美的集团', shares: 280, marketValue: 50400, weight: 3.16, sector: '家用电器', change: 0.14 },
       { rank: 10, code: '601888', name: '中国中免', shares: 165, marketValue: 63100, weight: 3.96, sector: '商贸零售', change: 0.19 },
     ],
   }
@@ -582,7 +581,7 @@ export function generateMockSectorAllocation(
       { sector: '家用电器', weight: 6.5, benchmarkWeight: 5.2, activeWeight: 1.3, count: 2 },
       { sector: '公用事业', weight: 5.8, benchmarkWeight: 5.0, activeWeight: 0.8, count: 1 },
       { sector: '商贸零售', weight: 5.5, benchmarkWeight: 3.8, activeWeight: 1.7, count: 1 },
-      { sector: '医药生物', width: 5.2, benchmarkWeight: 9.8, activeWeight: -4.6, count: 3 },
+      { sector: '医药生物', weight: 5.2, benchmarkWeight: 9.8, activeWeight: -4.6, count: 3 },
       { sector: '其他', weight: 16.2, benchmarkWeight: 25.8, activeWeight: -9.6, count: 29 },
     ],
     momentum: [

@@ -16,7 +16,6 @@ import {
 } from 'echarts/components'
 import { CanvasRenderer } from 'echarts/renderers'
 import type { KPICardData } from '../../types'
-import { useETFContext } from '../../hooks/useETFContext'
 
 echarts.use([LineChart, GridComponent, TooltipComponent, LegendComponent, CanvasRenderer])
 
@@ -212,8 +211,6 @@ const KPIItem: React.FC<KPIItemProps> = ({ data }) => {
 // ============================================
 
 const KPICards: React.FC = () => {
-  const { state } = useETFContext()
-
   return (
     <div className="animate-fadeInUp">
       <Row gutter={[16, 16]}>

@@ -3,7 +3,6 @@ import { Card, Typography, Space, Select, Row, Col, Statistic, Table, Tag, Progr
 import {
   SafetyOutlined,
   AlertOutlined,
-  QuestionCircleOutlined,
 } from '@ant-design/icons'
 import ReactEChartsCore from 'echarts-for-react/lib/core'
 import * as echarts from 'echarts/core'
@@ -36,7 +35,7 @@ function generateMockRiskMetrics(): RiskMetrics {
   // 生成回撤曲线
   let nav = 1.0
   let peak = 1.0
-  const drawdownCurve = days.map((_, i) => {
+  const drawdownCurve = days.map(() => {
     const dailyReturn = (Math.random() - 0.47) * 0.025
     nav *= 1 + dailyReturn
     if (nav > peak) peak = nav
@@ -437,6 +436,3 @@ const RiskAnalysis: React.FC = () => {
 }
 
 export default RiskAnalysis
-
-// 补充导入Button（HoldingsAnalysis中使用了但未导入）
-import { Button } from 'antd'

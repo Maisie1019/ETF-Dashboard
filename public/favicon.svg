@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1677ff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4096ff;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- 背景圆 -->
+  <circle cx="50" cy="50" r="48" fill="#141414" stroke="url(#grad)" stroke-width="2"/>
+  <!-- ETF文字 -->
+  <text x="50" y="38" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="url(#grad)" text-anchor="middle">ETF</text>
+  <!-- 豹子图案（简化） -->
+  <path d="M30,55 Q35,48 42,52 L45,58 L42,64 Q35,68 30,62 Z" fill="#1677ff" opacity="0.8"/>
+  <path d="M58,52 Q65,48 70,55 L70,62 Q65,68 58,64 L55,58 Z" fill="#1677ff" opacity="0.8"/>
+  <!-- 眼睛 -->
+  <circle cx="37" cy="57" r="2" fill="#fff"/>
+  <circle cx="63" cy="57" r="2" fill="#fff"/>
+  <!-- 底部文字 -->
+  <text x="50" y="82" font-family="Arial, sans-serif" font-size="10" fill="#999" text-anchor="middle">主动管理</text>
+</svg>

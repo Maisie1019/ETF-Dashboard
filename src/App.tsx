@@ -1,31 +1,27 @@
-import React, { useState } from 'react'
-import { ConfigProvider, theme as antdTheme } from 'antd'
-import zhCN from 'antd/locale/zh_CN'
-import Layout from './components/Layout/MainLayout'
-import { ETFProvider } from './hooks/useETFContext'
-
-const App: React.FC = () => {
-  const [isDark, setIsDark] = useState(true)
-
-  return (
-    <ConfigProvider
-      locale={zhCN}
-      theme={{
-        algorithm: isDark ? antdTheme.darkAlgorithm : antdTheme.defaultAlgorithm,
-        token: {
-          colorPrimary: '#1677ff',
-          borderRadius: 6,
-          fontSize: 14,
-          fontFamily:
-            '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-        },
-      }}
-    >
-      <ETFProvider>
-        <Layout isDark={isDark} onThemeToggle={() => setIsDark(!isDark)} />
-      </ETFProvider>
-    </ConfigProvider>
-  )
-}
-
-export default App
+import{ChangeEvent,useMemo,useState}from'react'
+import{createMockDataset}from'./dashboard/mock'
+import{loadDatasetFromApi,loadDatasetFromExcel}from'./dashboard/dataSource'
+import type{DashboardDataset,DataMode,Fund}from'./dashboard/types'
+import'./dashboard/dashboard.css'
+const pct=(v:number)=>`${v>=0?'+':''}${v.toFixed(2)}%`,money=(v:number)=>`${v.toFixed(2)} 亿元`
+function Chart({values,benchmark}:{values:number[];benchmark:number[]}){const path=(s:number[])=>{const min=Math.min(...values,...benchmark),max=Math.max(...values,...benchmark);return s.map((v,i)=>`${i?'L':'M'}${i/(s.length-1)*100},${94-(v-min)/(max-min||1)*82}`).join(' ')};return <svg className="chart" viewBox="0 0 100 100" preserveAspectRatio="none" aria-label="基金与基准累计收益走势"><path d={path(benchmark)} className="benchmark"/><path d={path(values)} className="fundline"/></svg>}
+export default function App(){
+ const[dataset,setDataset]=useState<DashboardDataset>(createMockDataset()),[selectedCode,setSelectedCode]=useState(dataset.funds[0].code),[mode,setMode]=useState<DataMode>('mock'),[message,setMessage]=useState('演示数据 · 非真实投资业绩')
+ const fund=useMemo(()=>dataset.funds.find(x=>x.code===selectedCode)??dataset.funds[0],[dataset,selectedCode]),series=dataset.nav.filter(x=>x.code===fund.code)
+ const apply=(next:DashboardDataset,nextMode:DataMode)=>{setDataset(next);setSelectedCode(next.funds[0].code);setMode(nextMode);setMessage(`${nextMode==='api'?'API':'Excel'} 数据已载入 · 更新于 ${next.asOf}`)}
+ const api=async()=>{setMessage('正在连接 API…');try{apply(await loadDatasetFromApi(),'api')}catch(e){setMessage(e instanceof Error?e.message:'API 连接失败')}}
+ const excel=async(e:ChangeEvent<HTMLInputElement>)=>{const file=e.target.files?.[0];if(!file)return;try{apply(await loadDatasetFromExcel(file),'excel')}catch(err){setMessage(err instanceof Error?err.message:'Excel 解析失败')}e.target.value=''}
+ return <div className="app-shell"><aside><div className="brand"><img src="/brand/yinhua-fund-logo.png" alt="银华基金 YINHUA FUND"/><span>ACTIVE ETF RESEARCH</span><strong>中国主动 ETF 研究平台</strong></div><nav><button className="active">市场总览</button><button>产品表现</button><button>持仓与风格</button><button>风险归因</button><button>流动性</button></nav><div className="source-box"><small>数据模式</small><strong>{mode==='mock'?'上市前演示':mode.toUpperCase()}</strong><p>所有指标均保留数据日期与口径。演示值不可用于投资决策。</p></div></aside>
+ <main><header><div><div className="eyebrow">CHINA ACTIVE ETF INTELLIGENCE</div><h1>市场监测台</h1><p>从规模、资金流、主动收益到交易质量的一体化观察</p></div><div className="actions"><button onClick={api}>连接 API</button><label>导入 Excel<input type="file" accept=".xlsx,.xls,.csv" onChange={excel}/></label></div></header>
+ <div className={`notice ${mode}`}>{message}<span>数据截止：{dataset.asOf}</span></div>
+ <section className="market-strip"><Stat label="覆盖产品" value={String(dataset.funds.length)} note="首批待上市"/><Stat label="合计规模" value={money(dataset.market.totalAum)} note="演示口径"/><Stat label="近 20 日净流入" value={money(dataset.market.netFlow20d)} note="份额变动法" up/><Stat label="规模加权超额" value={pct(dataset.market.weightedExcess)} note="相对各自业绩基准" up/></section>
+ <section className="toolbar"><div><span>观察产品</span><select value={selectedCode} onChange={e=>setSelectedCode(e.target.value)}>{dataset.funds.map(x=><option key={x.code} value={x.code}>{x.code} · {x.name}</option>)}</select></div><div className="status"><i/>待上市 · 指标为情景模拟</div></section>
+ <section className="kpis"><Kpi label="模拟规模" value={money(fund.aum)} note="资产净值，不等同成交额"/><Kpi label="成立以来收益" value={pct(fund.returnSinceLaunch)} note="累计收益，未年化" up/><Kpi label="相对基准超额" value={pct(fund.excessReturn)} note={`基准：${fund.benchmark}`} up/><Kpi label="年化波动率" value={`${fund.volatility.toFixed(2)}%`} note="日收益标准差 × √252"/><Kpi label="最大回撤" value={`-${fund.maxDrawdown.toFixed(2)}%`} note="峰值至谷值" down/></section>
+ <section className="grid"><article className="panel wide"><Title title="累计收益与基准" sub="统一起点 = 100；分红再投资口径"/><div className="legend"><span className="blue">基金</span><span>基准</span></div><Chart values={series.map(x=>x.fundIndex)} benchmark={series.map(x=>x.benchmarkIndex)}/></article><article className="panel"><Title title="主动管理画像" sub="相对基准的可解释偏离"/><Metric label="主动份额" value={`${fund.activeShare.toFixed(1)}%`}/><Metric label="年化跟踪误差" value={`${fund.trackingError.toFixed(2)}%`}/><Metric label="信息比率" value={fund.informationRatio.toFixed(2)}/><Metric label="前十大集中度" value={`${fund.top10Weight.toFixed(1)}%`}/></article><article className="panel"><Title title="交易与流动性" sub="二级市场 + 一级市场联合观察"/><Metric label="日均成交额" value={`${fund.adv.toFixed(0)} 万元`}/><Metric label="买卖价差" value={`${fund.spreadBps.toFixed(1)} bp`}/><Metric label="折溢价" value={pct(fund.premiumDiscount)}/><Metric label="近 20 日净申赎" value={`${fund.flow20d.toFixed(2)} 亿元`}/></article>
+ <article className="panel wide table-panel"><Title title="产品横向比较" sub="先比较同类产品，再下钻持仓、归因和交易质量"/><table><thead><tr><th>产品</th><th>基金公司</th><th>策略</th><th>模拟规模</th><th>累计收益</th><th>超额收益</th><th>主动份额</th><th>价差</th></tr></thead><tbody>{dataset.funds.map(x=><Row key={x.code} fund={x}/>)}</tbody></table></article></section>
+ <footer>方法说明：超额收益 = 基金累计收益 − 同期业绩比较基准累计收益；跟踪误差和信息比率需至少 60 个交易日后展示。</footer></main></div>}
+function Stat({label,value,note,up}:{label:string;value:string;note:string;up?:boolean}){return <div><small>{label}</small><strong className={up?'up':''}>{value}</strong><span>{note}</span></div>}
+function Kpi({label,value,note,up,down}:{label:string;value:string;note:string;up?:boolean;down?:boolean}){return <div className="kpi"><small>{label}</small><strong className={up?'up':down?'down':''}>{value}</strong><span>{note}</span></div>}
+function Title({title,sub}:{title:string;sub:string}){return <div className="panel-title"><h2>{title}</h2><p>{sub}</p></div>}
+function Metric({label,value}:{label:string;value:string}){return <div className="metric"><span>{label}</span><strong>{value}</strong></div>}
+function Row({fund:f}:{fund:Fund}){return <tr><td><b>{f.code}</b><span>{f.name}</span></td><td>{f.company}</td><td><em>{f.strategy}</em></td><td>{f.aum.toFixed(2)} 亿</td><td className="up">{pct(f.returnSinceLaunch)}</td><td className={f.excessReturn>=0?'up':'down'}>{pct(f.excessReturn)}</td><td>{f.activeShare.toFixed(1)}%</td><td>{f.spreadBps.toFixed(1)} bp</td></tr>}

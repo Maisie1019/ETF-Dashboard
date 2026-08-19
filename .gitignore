@@ -39,3 +39,12 @@ coverage/
 .cache/
 .temp/
 *.tsbuildinfo
+
+.openai/*.zip
+.openai/*.tar.gz
+.openai/node/
+.openai/site-stage/
+dist/
+node_modules/
+.env
+.env.local

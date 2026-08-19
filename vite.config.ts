@@ -27,8 +27,6 @@ export default defineConfig({
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom'],
-          echarts: ['echarts', 'echarts-for-react'],
-          antd: ['antd', '@ant-design/icons'],
         },
       },
     },

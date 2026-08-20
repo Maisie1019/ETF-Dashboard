@@ -27,3 +27,18 @@ nav button.active {
 #compare {
   scroll-margin-top: 22px;
 }
+
+.health { margin-top: 18px; height: 8px; background: #f0f1f2; border-radius: 8px; position: relative; }
+.health i { display: block; height: 100%; background: var(--red); border-radius: 8px; }
+.health span { display: block; margin-top: 6px; color: #7b818a; font-size: 10px; }
+.attribution { display: grid; grid-template-columns: 72px 1fr 48px; align-items: center; gap: 8px; margin: 13px 0; font-size: 11px; }
+.attribution i { display: block; height: 7px; background: var(--red); border-radius: 4px; max-width: 100%; }
+.attribution i.negative { background: #16865a; }
+.attribution strong { text-align: right; }
+.matrix { display: grid; grid-template-columns: 54px repeat(6, 1fr); gap: 5px; align-items: stretch; margin-top: 18px; font-size: 10px; }
+.matrix b { display: grid; place-items: center; color: #6f7680; font-weight: 500; min-height: 30px; }
+.matrix i { display: grid; place-items: center; min-height: 38px; border-radius: 4px; color: #4b282a; font-style: normal; }
+.rank { display: grid; grid-template-columns: 24px 1fr auto; align-items: center; gap: 8px; padding: 9px 0; border-bottom: 1px solid #eff0f2; font-size: 11px; }
+.rank em { display: grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: var(--soft); color: var(--red); font-style: normal; }
+.rank span b,.rank span small { display: block; }
+.rank span small { color: #999; font-size: 9px; margin-top: 2px; }

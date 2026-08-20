@@ -1,22 +1,20 @@
-# Dashboard 数据接口契约（v1.0）
+# Dashboard 数据接口契约（v2.0）
 
-前端请求 `GET {VITE_API_BASE_URL}/v1/dashboard`，返回 JSON。百分数统一使用“百分点数值”，例如 `6.82` 表示 `6.82%`；金额统一为亿元，成交额 `adv` 为万元，价差为 bp。
+前端请求 `GET {VITE_API_BASE_URL}/v2/dashboard`。百分比使用百分点数值（`6.82` 表示 `6.82%`）；规模、资金流为亿元，份额为亿份，成交额为万元，价差为 bp。
+
+| JSON / Excel 表 | 主键 | 用途 |
+|---|---|---|
+| `funds` | `code` | 产品主数据、核心业绩、规模、份额及流动性快照 |
+| `nav` | `code + date` | 基金和合同基准复权累计收益序列 |
+| `flows` | `code + date` | 日度净申赎估算及份额序列 |
+| `holdings` | `code + stockCode` | 披露日持仓、权重及权重变化 |
+| `sectors` | `code + sector` | 组合与基准行业权重 |
+| `factors` | `code + factor` | 标准化风格因子暴露 |
+
+Excel 导入必须包含以上六张同名工作表。API 返回同名数组，并增加：
 
 ```json
-{
-  "schemaVersion": "1.0",
-  "asOf": "2026-08-19",
-  "funds": [{
-    "code": "510520", "name": "质量精选主动ETF", "company": "银华基金",
-    "strategy": "质量", "benchmark": "中证800全收益指数", "aum": 18.6,
-    "returnSinceLaunch": 6.82, "excessReturn": 1.34, "volatility": 15.42,
-    "maxDrawdown": 8.63, "activeShare": 71.2, "trackingError": 5.18,
-    "informationRatio": 0.52, "top10Weight": 42.8, "adv": 2680,
-    "spreadBps": 8.6, "premiumDiscount": 0.06, "flow20d": 1.28
-  }],
-  "nav": [{"code":"510520","date":"2026-08-19","fundIndex":106.82,"benchmarkIndex":105.48}],
-  "market": {"totalAum":54.3,"netFlow20d":2.87,"weightedExcess":1.01}
-}
+{"schemaVersion":"2.0","asOf":"2026-08-20","funds":[],"nav":[],"flows":[],"holdings":[],"sectors":[],"factors":[],"market":{"totalAum":0,"totalShares":0,"netFlow20d":0,"weightedExcess":0}}
 ```
 
-Excel 文件使用同名字段，并包含两个工作表：`funds`（产品）和 `nav`（净值）。前端会校验必填字段；正式环境建议后端继续校验唯一键、日期连续性、权重合计与数据时点。
+生产环境每条记录应保存来源、来源时间、有效日期、入库时间和质量状态。净值、基准、行情与份额按交易日对齐；持仓必须使用实际披露可获得日，避免前视偏差。API 建议增加鉴权、缓存、分页、限流、监控和 schema 版本兼容策略。

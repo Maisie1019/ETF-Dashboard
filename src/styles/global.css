@@ -16,13 +16,13 @@
   --info-color: #1677ff;
 
   /* 中性色 */
-  --text-primary: rgba(255, 255, 255, 0.95);
-  --text-secondary: rgba(255, 255, 255, 0.75);
-  --text-tertiary: rgba(255, 255, 255, 0.45);
-  --border-color: rgba(255, 255, 255, 0.12);
-  --background-base: #141414;
-  --background-elevated: #1f1f1f;
-  --background-overlay: #2a2a2a;
+  --text-primary: #24262b;
+  --text-secondary: #666d76;
+  --text-tertiary: #9298a0;
+  --border-color: #e8eaed;
+  --background-base: #ffffff;
+  --background-elevated: #ffffff;
+  --background-overlay: #fafafa;
 
   /* 间距系统 */
   --spacing-xs: 4px;
@@ -89,7 +89,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: var(--background-base);
+  background-color: #ffffff;
   color: var(--text-primary);
   font-size: var(--font-size-md);
   line-height: 1.5;

@@ -12,9 +12,16 @@
   "d1_databases": [{
     "binding": "DB",
     "database_name": "active-etf-db",
-    "database_id": "a5ef0d4d-7ae7-4dad-83b0-f5a8fa625649",
+    "database_id": "REPLACE_WITH_CLOUDFLARE_D1_ID",
     "migrations_dir": "migrations"
   }],
+  "r2_buckets": [{
+    "binding": "RAW_DATA",
+    "bucket_name": "active-etf-raw-data"
+  }],
+  "triggers": {
+    "crons": ["30 10 * * 1-5"]
+  },
   "vars": {
     "DEPLOYMENT_TARGET": "cloudflare"
   }
